@@ -1,6 +1,11 @@
 apiVersion: v2
-description: A Helm chart to serve as the Validated Patterns Template
+description: Deploys RHBK
 keywords:
   - pattern
-name: vp-template
-version: 0.0.1
+name: rh-keycloak
+type: application
+version: 0.0.2
+home: https://github.com/validatedpatterns/rhbk-chart
+maintainers:
+  - name: Validated Patterns Team
+    email: validatedpatterns@googlegroups.com
