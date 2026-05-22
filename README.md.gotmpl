@@ -57,10 +57,10 @@ allow defining fine-grained rules for each pod type:
 
 - `networkPolicy.keycloak` — egress rules for keycloak pods (ingress is
   managed by the operator policy above)
-- `networkPolicy.postgresql` — ingress and egress rules for postgresql-db pods
+- `networkPolicy.postgresql` — ingress and egress rules for PostgreSQL pods
 - `networkPolicy.operator` — ingress and egress rules for rhbk-operator pods
 
-Example — allow keycloak egress to DNS and PostgreSQL, postgresql
+Example — allow keycloak egress to DNS and PostgreSQL, PostgreSQL
 ingress from keycloak, and operator egress to Kubernetes API:
 
 ```yaml
