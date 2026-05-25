@@ -6,17 +6,17 @@ global:
 
 # -- One-shot ExternalSecret provisioning for keycloak-users.
 # When oneShot is true, the keycloak-users ExternalSecret becomes an
-# ArgoCD Sync hook with BeforeHookCreation and deletionPolicy: Retain.
-# A PostSync job in the wrapper chart (e.g. rh-keycloak in
-# layered-zero-trust) deletes the ExternalSecret with --cascade=orphan
-# (so the Secret survives), then cleans up Secrets labeled
-# secretCleanupLabel=delete.
+# ArgoCD Sync hook with HookSucceeded and deletionPolicy: Retain.
+# PrunePropagationPolicy=orphan ensures the K8s Secret survives when
+# ArgoCD deletes the ExternalSecret.  A PostSync Job in the wrapper
+# chart (e.g. rh-keycloak in layered-zero-trust) then cleans up
+# Secrets labeled secretCleanupLabel=delete.
 # When false (default), keycloak-users is a regular ExternalSecret with
 # no hook annotations — the Secret and ExternalSecret persist.
 # @default -- disabled (regular ExternalSecret, no hooks)
 externalSecrets:
   oneShot: false
-  secretCleanupLabel: "ztvp.io/cleanup"
+  secretCleanupLabel: "validatedpatterns.io/cleanup"
 
 # -- Default-deny NetworkPolicy for the keycloak namespace.
 # When enabled, deploys a namespace-wide NetworkPolicy that blocks all ingress and egress
