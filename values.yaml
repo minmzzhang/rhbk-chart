@@ -6,16 +6,20 @@ global:
 
 # -- One-shot ExternalSecret provisioning for keycloak-users.
 # When oneShot is true, the keycloak-users ExternalSecret becomes an
-# ArgoCD Sync hook with HookSucceeded and deletionPolicy: Retain.
-# PrunePropagationPolicy=orphan ensures the K8s Secret survives when
-# ArgoCD deletes the ExternalSecret.  A PostSync Job in the wrapper
-# chart (e.g. rh-keycloak in layered-zero-trust) then cleans up
-# Secrets labeled secretCleanupLabel=delete.
-# When false (default), keycloak-users is a regular ExternalSecret with
-# no hook annotations — the Secret and ExternalSecret persist.
+# ArgoCD Sync hook with HookSucceeded and creationPolicy: Orphan.
+# Orphan prevents ESO from setting an ownerReference on the Secret,
+# so k8s GC will not cascade-delete the Secret when ArgoCD removes
+# the ExternalSecret hook after sync.
+# A PostSync Job in the wrapper chart (e.g. rh-keycloak in
+# layered-zero-trust) then cleans up Secrets labeled
+# secretCleanupLabel=delete.
+# When oneShot is false (default), keycloak-users is a regular
+# ExternalSecret with no hook annotations — the Secret and
+# ExternalSecret persist.
 # @default -- disabled (regular ExternalSecret, no hooks)
 externalSecrets:
   oneShot: false
+  creationPolicy: Owner
   secretCleanupLabel: "validatedpatterns.io/cleanup"
 
 # -- Default-deny NetworkPolicy for the keycloak namespace.
