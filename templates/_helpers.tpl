@@ -20,3 +20,19 @@ Generate the hostname for the Ingress.
 {{- print .Values.keycloak.ingress.hostname }}
 {{- end }}
 {{- end }}
+
+{{/*
+Generate the lifecycle for the ExternalSecrets resource.
+*/}}
+{{- define "keycloak.externalSecrets.lifecycle" -}}
+refreshPolicy: {{ .local.refreshPolicy | default .global.refreshPolicy }}
+refreshInterval: {{ .local.refreshInterval | default .global.refreshInterval }}
+{{- end }}
+
+{{/*
+Generate the target lifecycle for the ExternalSecrets resource.
+*/}}
+{{- define "keycloak.externalSecrets.targetLifecycle" -}}
+creationPolicy: {{ .local.creationPolicy | default .global.creationPolicy }}
+deletionPolicy: {{ .local.deletionPolicy | default .global.deletionPolicy }}
+{{- end }}
