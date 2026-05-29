@@ -1,6 +1,8 @@
 # https://hub.docker.com/r/helmunittest/helm-unittest/tags/
 HELM_UNITTEST_IMAGE ?= docker.io/helmunittest/helm-unittest:3.14.4-0.5.0
 HELM_DOCS_IMAGE ?= docker.io/jnorwood/helm-docs:latest
+# https://hub.docker.com/r/jauderho/prettier/tags
+PRETTIER_IMAGE ?= docker.io/jauderho/prettier:latest
 
 PWD=$(shell pwd)
 MYNAME=$(shell id -n -u)
@@ -29,6 +31,7 @@ helm-docs: ## Generates README.md from values.yaml
 	# podman run $(PODMAN_ARGS) -v $(PWD):/helm-docs:rw $(HELM_DOCS_IMAGE) -x
 	# Then render the README.md file
 	podman run $(PODMAN_ARGS) -v $(PWD):/helm-docs:rw $(HELM_DOCS_IMAGE)
+	podman run $(PODMAN_ARGS) -v $(PWD):/work:rw -w /work $(PRETTIER_IMAGE) --write README.md
 
 .PHONY: test
 test: helm-lint helm-unittest ## Runs helm lint and unit tests
