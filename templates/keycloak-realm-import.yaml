@@ -1,12 +1,5 @@
-{{- if or .Values.keycloak.defaultConfig .Values.keycloak.realms }}
-{{/*
-Merge realms
-*/}}
-{{- $realms := .Values.keycloak.realms | default list }}
-{{- if .Values.keycloak.defaultConfig }}
-{{- $realms = append $realms .Values.keycloak.defaultRealm }}
-{{- end }}
-{{- range $realms }}
+{{- if .Values.keycloak.realms }}
+{{- range .Values.keycloak.realms }}
 {{- $realm := deepCopy . }}
 {{- $localDomain := $.Values.global.localClusterDomain }}
 {{- $oidcProviderBase := printf "https://spire-spiffe-oidc-discovery-provider.%s" $localDomain }}
@@ -51,40 +44,9 @@ spec:
   keycloakCRName: keycloak
   realm:
 {{- toYaml $realm | nindent 4 }}
+{{- with $.Values.keycloak.realmPlaceholders }}
   placeholders:
-    QTODO_ADMIN_PASSWORD:
-      secret:
-        name: {{ $.Values.keycloak.users.secretName }}
-        key: qtodo-admin-password
-    QTODO_USER1_PASSWORD:
-      secret:
-        name: {{ $.Values.keycloak.users.secretName }}
-        key: qtodo-user1-password
-    RHTAS_USER_PASSWORD:
-      secret:
-        name: {{ $.Values.keycloak.users.secretName }}
-        key: rhtas-user-password
-    RHTPA_USER_PASSWORD:
-      secret:
-        name: {{ $.Values.keycloak.users.secretName }}
-        key: rhtpa-user-password
-{{- if and $.Values.keycloak.oidcSecrets.qtodo (default false $.Values.keycloak.oidcSecrets.qtodo.enabled) }}
-    QTODO_CLIENT_SECRET:
-      secret:
-        name: oidc-client-secret
-        key: client-secret
+    {{- toYaml . | nindent 4 }}
 {{- end }}
-    RHTPA_CLI_SECRET:
-      secret:
-        name: rhtpa-oidc-cli-secret
-        key: client-secret
-    ACS_ADMIN_PASSWORD:
-      secret:
-        name: {{ $.Values.keycloak.users.secretName }}
-        key: acs-admin-password
-    ACS_CLIENT_SECRET:
-      secret:
-        name: acs-oidc-client-secret
-        key: client-secret
 {{- end }}
 {{- end }}

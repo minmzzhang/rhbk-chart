@@ -36,3 +36,21 @@ Generate the target lifecycle for the ExternalSecrets resource.
 creationPolicy: {{ .local.creationPolicy | default .global.creationPolicy }}
 deletionPolicy: {{ .local.deletionPolicy | default .global.deletionPolicy }}
 {{- end }}
+
+{{/*
+Generate the lifecycle for an extraSecrets entry.
+Per-entry fields override global defaults.
+*/}}
+{{- define "keycloak.extraSecrets.lifecycle" -}}
+refreshPolicy: {{ .local.refreshPolicy | default .global.refreshPolicy }}
+refreshInterval: {{ .local.refreshInterval | default .global.refreshInterval }}
+{{- end }}
+
+{{/*
+Generate the target lifecycle for an extraSecrets entry.
+Per-entry fields override global defaults.
+*/}}
+{{- define "keycloak.extraSecrets.targetLifecycle" -}}
+creationPolicy: {{ .local.creationPolicy | default .global.creationPolicy }}
+deletionPolicy: {{ .local.deletionPolicy | default .global.deletionPolicy }}
+{{- end }}
