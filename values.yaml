@@ -2,7 +2,7 @@ global:
   localClusterDomain: apps.example.com
   creationPolicy: Owner
   deletionPolicy: Retain
-  refreshInterval: 1h
+  refreshInterval: 1h0m0s
   refreshPolicy: Periodic
   secretStore:
     kind: ClusterSecretStore
@@ -18,14 +18,14 @@ externalSecrets:
     #creationPolicy: Owner
     #deletionPolicy: Retain
     #refreshPolicy: Periodic
-    #refreshInterval: 1h
+    #refreshInterval: 1h0m0s
   postgresqlDb:
     metadata: {}
     targetMetadata: {}
     #creationPolicy: Owner
     #deletionPolicy: Retain
     #refreshPolicy: Periodic
-    #refreshInterval: 1h
+    #refreshInterval: 1h0m0s
 
 # -- Default-deny NetworkPolicy for the keycloak namespace.
 # When enabled, deploys a namespace-wide NetworkPolicy that blocks all ingress and egress
